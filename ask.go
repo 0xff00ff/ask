@@ -25,7 +25,7 @@ type Answer struct {
 func For(source interface{}, path string) *Answer {
 	parts, ok := splitCache[path]
 	if !ok {
-		parts = strings.Split(path, ".")
+		parts = split(path, '.')
 		splitCache[path] = parts
 	}
 
@@ -51,6 +51,29 @@ func For(source interface{}, path string) *Answer {
 	}
 
 	return &Answer{value: current}
+}
+
+func split(str string, sep rune) []string {
+	var res []string
+	var buf []rune
+	for _, v := range str {
+		if v == sep {
+			if len(buf) > 0 && buf[len(buf)-1] == '\\' {
+				// remove escape character
+				buf = buf[:len(buf)-1]
+				// skip this dot
+				continue
+			}
+			res = append(res, string(buf))
+			buf = []rune{}
+		} else {
+			buf = append(buf, v)
+		}
+	}
+	if len(buf) > 0 {
+		res = append(res, string(buf))
+	}
+	return res
 }
 
 func accessMap(source interface{}, key string) interface{} {

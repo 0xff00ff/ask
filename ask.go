@@ -60,7 +60,7 @@ func split(str string, sep rune) []string {
 		if v == sep {
 			if len(buf) > 0 && buf[len(buf)-1] == '\\' {
 				// remove escape character
-				buf = buf[:len(buf)-1]
+				buf[len(buf)-1] = sep
 				// skip this dot
 				continue
 			}

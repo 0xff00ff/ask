@@ -498,3 +498,22 @@ func TestValue(t *testing.T) {
 	}
 
 }
+
+func TestSplit(t *testing.T) {
+
+	source := map[string][]string{
+		"qwe.qwe":   {"qwe", "qwe"},
+		"value2":    {"value2"},
+		"":          nil,
+		"qwe\\.asd": {"qwe.asd"},
+	}
+
+	// OK
+	for k, v := range source {
+		res := split(k, '.')
+		if !reflect.DeepEqual(res, v) {
+			t.Errorf("Value() = (%v); want (%v)", res, v)
+		}
+	}
+
+}
